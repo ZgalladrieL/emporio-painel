@@ -1,0 +1,96 @@
+/* ─── HERO ROW — 4 KPIs ─── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 0.5px solid var(--border);
+  border-radius: 22px;
+  overflow: hidden;
+  margin-bottom: 1.4rem;
+}
+.kpi-card {
+  background: var(--bg2);
+  padding: 2rem 1.8rem 1.6rem;
+  position: relative;
+  overflow: hidden;
+  transition: background .3s, transform .3s;
+  opacity: 0;
+  animation: kpiIn .55s cubic-bezier(.2,.7,.2,1) forwards;
+}
+.kpi-card:nth-child(1) { animation-delay: 0.05s; }
+.kpi-card:nth-child(2) { animation-delay: 0.15s; }
+.kpi-card:nth-child(3) { animation-delay: 0.25s; }
+.kpi-card:nth-child(4) { animation-delay: 0.35s; }
+@keyframes kpiIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.kpi-card:hover { background: var(--bg3); }
+.kpi-card.k-main {
+  background: linear-gradient(160deg,#1f1710 0%,#130e08 100%);
+}
+.kpi-card.k-main:hover { background: linear-gradient(160deg,#261e13 0%,#17110a 100%); }
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+}
+.k-main::before   { background: linear-gradient(90deg, var(--copper), var(--coral), transparent); }
+.k-beer::before   { background: linear-gradient(90deg, var(--blue-muted), transparent); }
+.k-wine::before   { background: linear-gradient(90deg, var(--wine), transparent); }
+.k-ticket::before { background: linear-gradient(90deg, var(--green), transparent); }
+
+.kpi-ghost {
+  position: absolute;
+  bottom: -14px; right: 8px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 90px;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0.045;
+  color: var(--white);
+  pointer-events: none;
+  user-select: none;
+}
+
+.kpi-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 1.3rem;
+}
+.kpi-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 46px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--white);
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+.kpi-prefix {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  opacity: 0.5;
+}
+.k-main  .kpi-val { color: var(--copper-lt); font-size: 52px; }
+.k-beer  .kpi-val { color: #8ab8d4; }
+.k-wine  .kpi-val { color: #c07892; }
+.k-ticket .kpi-val { color: #98c07a; }
+
+.kpi-delta {
+  margin-top: 12px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.delta-up   { color: var(--green); }
+.delta-down { color: var(--red); }
+.delta-neu  { color: var(--text3); }

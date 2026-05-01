@@ -1,0 +1,154 @@
+/* ─── REPORTS ─── */
+.rep-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+.rep-card {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  padding: 1.6rem 1.7rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform .3s, box-shadow .3s, background .3s;
+  opacity: 0;
+  animation: kpiIn .55s cubic-bezier(.2,.7,.2,1) forwards;
+}
+.rep-card:nth-child(1) { animation-delay: 0.05s; }
+.rep-card:nth-child(2) { animation-delay: 0.13s; }
+.rep-card:nth-child(3) { animation-delay: 0.21s; }
+.rep-card:nth-child(4) { animation-delay: 0.29s; }
+.rep-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(90deg, var(--copper), var(--coral), transparent);
+}
+.rep-card::after {
+  content: '';
+  position: absolute;
+  top: -40px; left: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(200,130,74,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.rep-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  background: var(--bg3);
+}
+.rep-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+.rep-icon {
+  width: 38px; height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(200,130,74,0.10);
+  color: var(--copper-lt);
+  flex-shrink: 0;
+}
+.rep-meta { flex: 1; }
+.rep-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+.rep-desc {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.rep-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.9rem;
+  border-top: 0.5px solid var(--border);
+  margin-bottom: 1rem;
+}
+.rep-info .label {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.rep-info .last {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  color: var(--text);
+}
+.rep-result {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .5s cubic-bezier(.2,.7,.2,1), opacity .3s ease, margin-top .3s ease;
+}
+.rep-result.open {
+  max-height: 400px;
+  opacity: 1;
+  margin-top: 1rem;
+}
+
+/* ─── FINANCIAL EMPTY STATE ─── */
+.empty-state {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  padding: 4.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.empty-state::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1.5px;
+  background: linear-gradient(90deg, var(--copper), var(--coral), transparent);
+}
+.empty-state::after {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(200,130,74,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: rgba(200,130,74,0.08);
+  color: var(--copper-lt);
+  margin-bottom: 1.4rem;
+  position: relative;
+}
+.empty-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+.empty-sub {
+  font-size: 13px;
+  color: var(--text3);
+  letter-spacing: 0.04em;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}

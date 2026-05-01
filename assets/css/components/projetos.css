@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════
+   PROJETOS · tabela editável (v4 · Visão Geral 5.3)
+   ═══════════════════════════════════════════════ */
+.proj-tbl-wrap {
+  margin-top: 1rem;
+  border: 0.5px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg2);
+}
+.proj-tbl { width: 100%; border-collapse: collapse; }
+.proj-tbl thead th {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--white);
+  text-align: left;
+  letter-spacing: 0.04em;
+  padding: 14px 1.4rem;
+  border-bottom: 0.5px solid var(--border2);
+  background: linear-gradient(160deg, #181410 0%, #14110d 100%);
+}
+.proj-tbl thead th:last-child { width: 38px; padding-right: 1rem; }
+.proj-tbl tbody td {
+  padding: 11px 1.4rem;
+  border-bottom: 0.5px solid var(--border);
+  font-size: 14px;
+  color: var(--text2);
+  vertical-align: middle;
+}
+.proj-tbl tbody tr:last-child td { border-bottom: none; }
+.proj-tbl tbody tr { transition: background .2s; }
+.proj-tbl tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+/* células editáveis */
+.proj-cell {
+  outline: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: -4px -8px;
+  transition: background .15s, box-shadow .15s;
+  display: inline-block;
+  min-width: 60px;
+}
+.proj-cell:hover { background: rgba(255,255,255,0.02); }
+.proj-cell:focus {
+  background: rgba(255,255,255,0.025);
+  box-shadow: inset 0 0 0 0.5px rgba(200,130,74,0.45);
+}
+.proj-cell[data-field="name"] {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 0.02em;
+}
+.proj-cell[data-field="sector"] {
+  font-size: 13px;
+  color: var(--text);
+}
+.proj-cell[data-field="note"] {
+  font-size: 13px;
+  color: var(--text2);
+  display: block;
+  min-height: 1.4em;
+  line-height: 1.5;
+}
+.proj-cell[data-field="note"]:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text3);
+  font-style: italic;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* status select estilizado como tag colorida */
+.proj-status-sel {
+  appearance: none;
+  font-size: 12px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 4px;
+  padding: 4px 24px 4px 11px;
+  cursor: pointer;
+  outline: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+  transition: filter .15s;
+}
+.proj-status-sel:hover { filter: brightness(1.12); }
+.proj-status-sel.s-done   { background-color: rgba(106,158,82,0.12); color: var(--green); border: 0.5px solid rgba(106,158,82,0.30); }
+.proj-status-sel.s-doing  { background-color: rgba(233,196,106,0.12); color: var(--amber); border: 0.5px solid rgba(233,196,106,0.30); }
+.proj-status-sel.s-paused { background-color: rgba(255,255,255,0.025); color: var(--text3); border: 0.5px solid var(--border2); }
+.proj-status-sel option { background: var(--bg2); color: var(--text); }
+
+/* botão remover linha (visível no hover) */
+.proj-del {
+  background: transparent;
+  border: none;
+  color: var(--text3);
+  font-size: 18px;
+  cursor: pointer;
+  width: 24px; height: 24px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity .15s, color .15s;
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.proj-tbl tbody tr:hover .proj-del { opacity: 1; }
+.proj-del:hover { color: var(--red); }
+
+/* footer: botão Adicionar */
+.proj-tbl-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.9rem;
+}

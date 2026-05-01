@@ -1,0 +1,179 @@
+/* ─── SHELL ─── */
+.shell {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 2.6rem 2.4rem 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── HEADER ─── */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 3.2rem;
+  padding-bottom: 1.8rem;
+  border-bottom: 0.5px solid var(--border);
+  position: relative;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, var(--copper), transparent);
+}
+.brand-wrap { display: flex; flex-direction: column; gap: 6px; }
+.brand {
+  font-family: 'Cinzel', serif;
+  font-size: 21px;
+  font-weight: 400;
+  color: var(--white);
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+.brand em { color: var(--copper-lt); font-style: normal; }
+.brand-sub {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+.header-right { display: flex; align-items: center; gap: 1.8rem; flex-wrap: wrap; }
+
+.nav-link {
+  position: relative;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  cursor: pointer;
+  transition: color .25s;
+  text-decoration: none;
+  padding: 6px 0;
+  background: transparent;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+}
+.nav-link:hover { color: var(--copper-lt); }
+.nav-link.active { color: var(--white); }
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--copper), var(--coral), transparent);
+}
+
+/* ─── SECTIONS ─── */
+.section {
+  display: none;
+  animation: fadeIn .22s ease-out;
+}
+.section.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── MAIN GRID ─── */
+.grid-a {
+  display: grid;
+  grid-template-columns: 1.75fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+.grid-b {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.6rem;
+  border-top: 0.5px solid var(--border);
+  margin-top: 0.4rem;
+}
+.footer-txt {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--text3);
+}
+.footer-btn {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 0.5px solid rgba(200,130,74,0.35);
+  color: var(--copper-lt);
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+  font-family: 'DM Sans', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-btn:hover {
+  background: rgba(200,130,74,0.08);
+  border-color: rgba(200,130,74,0.6);
+}
+.footer-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ─── ORNAMENTAL DIVIDER ─── */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.4rem;
+}
+.ornament-line { flex: 1; height: 0.5px; background: var(--border); }
+.ornament-diamond {
+  width: 5px; height: 5px;
+  background: var(--copper);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+/* ─── SECTION HEADING ─── */
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.4rem;
+}
+.section-heading h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 0.02em;
+}
+.section-heading .eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+/* ─── COMPACT LIST PANEL HEADERS ─── */
+.panel-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.3rem;
+}
+.panel-header-row .panel-title { margin-bottom: 0; }
+.panel-header-row .panel-sub   { margin-bottom: 0; }
