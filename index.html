@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empório Barretão · Painel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link rel="stylesheet" href="assets/css/painel.css">
+</head>
+<body>
+<div class="shell">
+
+  <!-- ─── HEADER ─── -->
+  <header class="header">
+    <div class="brand-wrap">
+      <div class="brand">Empório <em>Barretão</em></div>
+      <div class="brand-sub">Painel de operações</div>
+    </div>
+    <div class="header-right">
+      <button class="nav-link active" data-target="overview">Visão geral</button>
+      <button class="nav-link" data-target="financial">Financeiro</button>
+      <button class="nav-link" data-target="stock">Estoque</button>
+      <button class="nav-link" data-target="automations">Automações</button>
+      <button class="nav-link" data-target="reports">Relatórios</button>
+    </div>
+  </header>
+
+  <!-- ═══════════ SEÇÃO 1 · VISÃO GERAL ═══════════ -->
+  <section class="section active" id="overview">
+
+    <!-- CARD 1 · Resumo Executivo · KPIs hero conectados (v5) -->
+    <div class="card" id="card-resumo">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Resumo Executivo</div>
+          <div class="card-eyebrow" style="margin-top:6px;">Indicadores do período · Mente Ivo</div>
+        </div>
+      </div>
+
+      <div class="hero-grid" id="vg-hero" style="grid-template-columns: 1.2fr 1fr 1fr; margin-top: 1rem; margin-bottom: 0;">
+        <div class="kpi-card k-main">
+          <div class="kpi-eyebrow">Faturamento total</div>
+          <div class="kpi-val"><span class="kpi-prefix">R$</span><span id="vg-kpi-fat">0</span></div>
+          <div class="kpi-delta delta-neu" id="vg-kpi-fat-sub">aguardando dados…</div>
+          <div class="kpi-ghost">R$</div>
+        </div>
+        <div class="kpi-card k-ticket">
+          <div class="kpi-eyebrow">Melhor dia</div>
+          <div class="kpi-val"><span class="kpi-prefix">R$</span><span id="vg-kpi-melhor">0</span></div>
+          <div class="kpi-delta delta-neu" id="vg-kpi-melhor-sub">—</div>
+          <div class="kpi-ghost">↑</div>
+        </div>
+        <div class="kpi-card k-wine">
+          <div class="kpi-eyebrow">Pior dia</div>
+          <div class="kpi-val"><span class="kpi-prefix">R$</span><span id="vg-kpi-pior">0</span></div>
+          <div class="kpi-delta delta-neu" id="vg-kpi-pior-sub">—</div>
+          <div class="kpi-ghost">↓</div>
+        </div>
+      </div>
+
+      <div class="card-watermark">RE</div>
+    </div>
+
+    <!-- ORNAMENT -->
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line"></div>
+    </div>
+
+    <!-- CARD 2 · Evolução do Faturamento por Grupo de Produtos (5.2 — preparado, sem dados) -->
+    <div class="panel" id="panel-grupos">
+      <div class="panel-title">Evolução do Faturamento por Grupo de Produtos</div>
+      <div class="panel-sub">Aguardando configuração dos grupos</div>
+      <div class="chart-wrap" style="display:flex;align-items:center;justify-content:center;">
+        <div class="card-empty-slot" style="width:100%;border:0.5px dashed var(--border2);">
+          Aguardando configuração dos grupos de produtos.
+        </div>
+      </div>
+    </div>
+
+    <!-- ORNAMENT -->
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line"></div>
+    </div>
+
+    <!-- CARD 3 · Projetos e Melhorias (editável + status select + localStorage — 5.3) -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Projetos e Melhorias</div>
+          <div class="card-eyebrow" style="margin-top:6px;">Iniciativas em curso · clique para editar</div>
+        </div>
+      </div>
+
+      <div class="proj-tbl-wrap">
+        <table class="tbl proj-tbl">
+          <thead>
+            <tr>
+              <th>Projeto</th>
+              <th>Setor</th>
+              <th>Status</th>
+              <th>Observação</th>
+              <th aria-label="Remover"></th>
+            </tr>
+          </thead>
+          <tbody id="proj-tbody"><!-- preenchido via JS --></tbody>
+        </table>
+      </div>
+      <div class="proj-tbl-foot">
+        <button class="footer-btn" id="proj-add-btn">＋ Adicionar projeto</button>
+      </div>
+
+      <div class="card-watermark">PJ</div>
+    </div>
+
+    <!-- ORNAMENT -->
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line"></div>
+    </div>
+
+    <!-- CARD 4 · Últimas do IVO (em branco — 5.4) -->
+    <div class="card" id="card-ivo">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Últimas do IVO</div>
+          <div class="card-eyebrow" style="margin-top:6px;">Sem novidades</div>
+        </div>
+      </div>
+      <div class="card-empty-slot">Conteúdo em breve.</div>
+      <div class="card-watermark">IV</div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════ SEÇÃO 2 · AUTOMAÇÕES ═══════════ -->
+  <section class="section" id="automations">
+
+    <div class="section-heading">
+      <h2>Automações em execução</h2>
+      <span class="eyebrow">Status · 25 abr · 14:32</span>
+    </div>
+
+    <div class="auto-grid">
+
+      <!-- AUTO_ORGANIZAR_BOLETOS -->
+      <div class="auto-card">
+        <div class="auto-card-head">
+          <div>
+            <div class="auto-name">AUTO_ORGANIZAR_BOLETOS</div>
+            <div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-top:6px;">Pipeline financeiro</div>
+          </div>
+          <span class="status-badge ok"><span class="dot"></span>Ativo</span>
+        </div>
+
+        <div class="auto-meta-grid">
+          <div class="meta-block">
+            <span class="meta-label">Última execução</span>
+            <span class="meta-val">25/04 · 14:30</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Resultado</span>
+            <span class="meta-val">2 boletos<span style="font-size:13px;color:var(--text2);font-style:italic;font-family:'DM Sans',sans-serif;font-weight:400"> processados</span></span>
+          </div>
+        </div>
+
+        <div class="dest-list">
+          <div class="dest-eyebrow">Destinos · Abril</div>
+          <div class="dest-row"><span class="dest-name">PHILIP MORRIS</span><span class="dest-count">3</span></div>
+          <div class="dest-row"><span class="dest-name">CIFAL</span><span class="dest-count">1</span></div>
+          <div class="dest-row"><span class="dest-name">LOUVADA</span><span class="dest-count">2</span></div>
+        </div>
+
+        <div class="trigger-pill">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          A cada 15 min
+        </div>
+
+        <!-- DIAGNÓSTICO -->
+        <div class="diag">
+          <div class="diag-head">
+            <span class="diag-eyebrow">Diagnóstico Mente Ivo</span>
+            <span class="tag green">OK</span>
+          </div>
+          <div class="diag-text">
+            Pipeline estável. Próximo passo: implementar reenvio automático em caso de OCR falho.
+          </div>
+        </div>
+      </div>
+
+      <!-- AUTO_ORGANIZAR_NF -->
+      <div class="auto-card">
+        <div class="auto-card-head">
+          <div>
+            <div class="auto-name">AUTO_ORGANIZAR_NF</div>
+            <div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-top:6px;">Pipeline fiscal</div>
+          </div>
+          <span class="status-badge ok"><span class="dot"></span>Ativo</span>
+        </div>
+
+        <div class="auto-meta-grid">
+          <div class="meta-block">
+            <span class="meta-label">Última execução</span>
+            <span class="meta-val">25/04 · 14:00</span>
+          </div>
+          <div class="meta-block">
+            <span class="meta-label">Resultado</span>
+            <span class="meta-val">1 NF · 18<span style="font-size:13px;color:var(--text2);font-style:italic;font-family:'DM Sans',sans-serif;font-weight:400"> itens</span></span>
+          </div>
+        </div>
+
+        <div class="dest-list">
+          <div class="dest-eyebrow">Fornecedores · Abril</div>
+          <div class="dest-row"><span class="dest-name">REGRA LOGISTICA</span><span class="dest-count">4 NFs</span></div>
+          <div class="dest-row"><span class="dest-name">RIO VERMELHO</span><span class="dest-count">2 NFs</span></div>
+        </div>
+
+        <div class="trigger-pill">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          A cada hora
+        </div>
+
+        <!-- DIAGNÓSTICO -->
+        <div class="diag">
+          <div class="diag-head">
+            <span class="diag-eyebrow">Diagnóstico Mente Ivo</span>
+            <span class="tag coral">Atenção</span>
+          </div>
+          <div class="diag-text">
+            1 erro nas últimas 24h. XML com estrutura fora do padrão NF-e recebido de RIO VERMELHO.
+          </div>
+          <div class="diag-error">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <div><strong style="color:#e89595;">Último erro · 25/04 12:00</strong> — Falha no parse: elemento <code>&lt;cEAN&gt;</code> ausente em 3 itens.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ORNAMENT -->
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line"></div>
+    </div>
+
+    <!-- LOG TABLE -->
+    <div class="panel" style="margin-bottom:1.2rem;">
+      <div class="panel-title">Log de execuções recentes</div>
+      <div class="panel-sub">Últimas 8 execuções · ordem cronológica reversa</div>
+      <table class="tbl log-tbl">
+        <thead>
+          <tr><th>Horário</th><th>Automação</th><th>Status</th><th>Resultado</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="time">25/04 · 14:30</td>
+            <td class="code">AUTO_ORGANIZAR_BOLETOS</td>
+            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
+            <td>2 boletos processados</td>
+          </tr>
+          <tr>
+            <td class="time">25/04 · 14:00</td>
+            <td class="code">AUTO_ORGANIZAR_NF</td>
+            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
+            <td>1 NF · 18 itens</td>
+          </tr>
+          <tr>
+            <td class="time">25/04 · 13:30</td>
+            <td class="code">AUTO_ORGANIZAR_BOLETOS</td>
+            <td><span class="status-cell idle"><span class="ic">○</span>Vazio</span></td>
+            <td>Nenhum arquivo encontrado</td>
+          </tr>
+          <tr>
+            <td class="time">25/04 · 13:00</td>
+            <td class="code">AUTO_ORGANIZAR_NF</td>
+            <td><span class="status-cell idle"><span class="ic">○</span>Vazio</span></td>
+            <td>Nenhum arquivo encontrado</td>
+          </tr>
+          <tr>
+            <td class="time">25/04 · 12:30</td>
+            <td class="code">AUTO_ORGANIZAR_BOLETOS</td>
+            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
+            <td>1 boleto processado</td>
+          </tr>
+          <tr>
+            <td class="time">25/04 · 12:00</td>
+            <td class="code">AUTO_ORGANIZAR_NF</td>
+            <td><span class="status-cell err"><span class="ic">✗</span>Erro</span></td>
+            <td>Falha no parse do XML</td>
+          </tr>
+          <tr>
+            <td class="time">25/04 · 11:30</td>
+            <td class="code">AUTO_ORGANIZAR_BOLETOS</td>
+            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
+            <td>3 boletos processados</td>
+          </tr>
+          <tr>
+            <td class="time">25/04 · 11:00</td>
+            <td class="code">AUTO_ORGANIZAR_NF</td>
+            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
+            <td>2 NFs · 34 itens</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <span class="footer-txt">Pipelines monitorados continuamente · próxima execução em ~14 min</span>
+      <button class="footer-btn">Ver histórico completo ↗</button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════ SEÇÃO 3 · RELATÓRIOS ═══════════ -->
+  <section class="section" id="reports">
+
+    <div class="section-heading">
+      <h2>Relatórios</h2>
+      <span class="eyebrow">Relatórios Fixos Mensais</span>
+    </div>
+
+    <div class="rep-grid">
+
+      <!-- 1 · Variação de Custo por Item -->
+      <div class="rep-card" data-rep="custo">
+        <div class="rep-head">
+          <div class="rep-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 17l6-6 4 4 8-8"/><polyline points="14 7 21 7 21 14"/></svg>
+          </div>
+          <div class="rep-meta">
+            <div class="rep-name">Variação de Custo por Item</div>
+            <div class="rep-desc">Itens com maior variação de preço de custo no mês.</div>
+          </div>
+        </div>
+        <div class="rep-info">
+          <span class="tag copper">Mensal</span>
+          <span class="last"><span class="label" style="margin-right:6px;">Última</span>30/03/26</span>
+        </div>
+        <button class="footer-btn rep-btn" data-mock="custo">
+          <span class="btn-label">Gerar relatório</span>
+        </button>
+        <div class="rep-result">
+          <div class="narrative" style="margin:0;">
+            <p>
+              No período de abril, os itens com maior variação foram: <strong>SKOL 350ml (+8,2%)</strong>,
+              <strong>HEINEKEN 600ml (+5,1%)</strong>, <strong>VINHO MIOLO BRANCO (-3,4%)</strong>.
+              Recomenda-se revisar precificação dos itens com alta superior a 5%.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 · Resumo de NFs -->
+      <div class="rep-card" data-rep="nf">
+        <div class="rep-head">
+          <div class="rep-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+          </div>
+          <div class="rep-meta">
+            <div class="rep-name">Resumo de Notas Fiscais</div>
+            <div class="rep-desc">Consolidado de NFs processadas por fornecedor.</div>
+          </div>
+        </div>
+        <div class="rep-info">
+          <span class="tag copper">Mensal</span>
+          <span class="last"><span class="label" style="margin-right:6px;">Última</span>30/03/26</span>
+        </div>
+        <button class="footer-btn rep-btn" data-mock="nf">
+          <span class="btn-label">Gerar relatório</span>
+        </button>
+        <div class="rep-result">
+          <div class="narrative" style="margin:0;">
+            <p>
+              Em abril foram processadas <strong>22 NFs</strong> · 412 itens. Top fornecedores:
+              <strong>REGRA LOGÍSTICA (12 NFs)</strong> e <strong>RIO VERMELHO (8 NFs)</strong>.
+              Taxa de sucesso de parsing: <strong>95,5%</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 · Boletos do Período -->
+      <div class="rep-card" data-rep="boletos">
+        <div class="rep-head">
+          <div class="rep-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="18" height="13" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="7" y1="15" x2="11" y2="15"/></svg>
+          </div>
+          <div class="rep-meta">
+            <div class="rep-name">Boletos do Período</div>
+            <div class="rep-desc">Vencimentos e valores pagos no mês.</div>
+          </div>
+        </div>
+        <div class="rep-info">
+          <span class="tag copper">Mensal</span>
+          <span class="last"><span class="label" style="margin-right:6px;">Última</span>30/03/26</span>
+        </div>
+        <button class="footer-btn rep-btn" data-mock="boletos">
+          <span class="btn-label">Gerar relatório</span>
+        </button>
+        <div class="rep-result">
+          <div class="narrative" style="margin:0;">
+            <p>
+              Em abril foram conciliados <strong>6 boletos</strong> · total <strong>R$ 4.821,77</strong>.
+              Maior pagamento: <strong>CIFAL · R$ 1.230,00</strong>. Nenhum vencimento em atraso no período.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 · Performance Automações -->
+      <div class="rep-card" data-rep="auto">
+        <div class="rep-head">
+          <div class="rep-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div class="rep-meta">
+            <div class="rep-name">Performance de Automações</div>
+            <div class="rep-desc">Taxa de sucesso e erros por automação.</div>
+          </div>
+        </div>
+        <div class="rep-info">
+          <span class="tag copper">Mensal</span>
+          <span class="last"><span class="label" style="margin-right:6px;">Última</span>30/03/26</span>
+        </div>
+        <button class="footer-btn rep-btn" data-mock="auto">
+          <span class="btn-label">Gerar relatório</span>
+        </button>
+        <div class="rep-result">
+          <div class="narrative" style="margin:0;">
+            <p>
+              <strong>AUTO_ORGANIZAR_BOLETOS</strong>: 96 execuções · 100% sucesso.
+              <strong>AUTO_ORGANIZAR_NF</strong>: 720 execuções · <strong>99,3% sucesso</strong> (5 erros, todos parse de XML).
+              Tempo médio de execução estável em ~3,2s.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <span class="footer-txt">Relatórios sincronizados automaticamente após o fechamento do mês</span>
+      <button class="footer-btn">Histórico de relatórios ↗</button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════ SEÇÃO 4 · FINANCEIRO ═══════════ -->
+  <section class="section" id="financial">
+
+    <div class="section-heading">
+      <h2>Financeiro</h2>
+      <span class="eyebrow" id="fin-status" data-status="loading">
+        <span class="fin-status"><span class="dot"></span><span class="txt">Carregando dados…</span></span>
+      </span>
+    </div>
+
+    <!-- Toolbar: período global (v4 — date range) -->
+    <div class="fin-toolbar">
+      <div class="fin-period">
+        <div class="fin-period-group">
+          <label for="fin-date-from">De</label>
+          <input type="date" id="fin-date-from" />
+        </div>
+        <div class="fin-period-group">
+          <label for="fin-date-to">Até</label>
+          <input type="date" id="fin-date-to" />
+        </div>
+        <button class="fin-period-btn" id="fin-apply">Aplicar filtro</button>
+      </div>
+    </div>
+
+    <!-- Sub-tabs -->
+    <div class="fin-subtabs" role="tablist">
+      <button class="fin-subtab active" data-pane="pane-geral" role="tab">Geral</button>
+      <button class="fin-subtab" data-pane="pane-contas" role="tab">Contas</button>
+      <button class="fin-subtab" data-pane="pane-faturamento" role="tab">Faturamento</button>
+    </div>
+
+    <!-- ─────── PAINEL GERAL ─────── -->
+    <div class="fin-pane active" id="pane-geral">
+      <div class="fin-kpis">
+        <div class="fin-kpi k-rev">
+          <div class="fin-kpi-eyebrow">Faturamento</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="kpi-fat">0</span></div>
+          <div class="fin-kpi-foot" id="kpi-fat-sub">—</div>
+        </div>
+        <div class="fin-kpi k-pay">
+          <div class="fin-kpi-eyebrow">Contas a pagar</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="kpi-pay">0</span></div>
+          <div class="fin-kpi-foot" id="kpi-pay-sub">—</div>
+        </div>
+        <div class="fin-kpi k-paid">
+          <div class="fin-kpi-eyebrow">Total pago</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="kpi-paid">0</span></div>
+          <div class="fin-kpi-foot" id="kpi-paid-sub">—</div>
+        </div>
+        <div class="fin-kpi k-pend">
+          <div class="fin-kpi-eyebrow">Saldo pendente</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="kpi-pend">0</span></div>
+          <div class="fin-kpi-foot" id="kpi-pend-sub">—</div>
+        </div>
+      </div>
+
+      <div class="fin-chart">
+        <div class="fin-chart-title">Faturamento vs Contas a Pagar</div>
+        <div class="fin-chart-sub">Receita diária e despesas por vencimento</div>
+        <div class="chart-wrap">
+          <canvas id="finBalanceChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────── PAINEL DE CONTAS ─────── -->
+    <div class="fin-pane" id="pane-contas">
+
+      <div class="fin-kpis cols-2" style="margin-bottom:1.2rem;">
+        <div class="fin-kpi k-pend">
+          <div class="fin-kpi-eyebrow">Saldo pendente</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="kpi-c-pend">0</span></div>
+          <div class="fin-kpi-foot" id="kpi-c-pend-sub">—</div>
+        </div>
+        <div class="fin-kpi k-pay">
+          <div class="fin-kpi-eyebrow">Valor total</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="kpi-c-total">0</span></div>
+          <div class="fin-kpi-foot" id="kpi-c-total-sub">—</div>
+        </div>
+      </div>
+
+      <!-- v5 · Tabela de boletos (dados reais) -->
+      <div class="fin-table-wrap" id="boletos-wrap">
+        <div class="fin-table-head">
+          <h3>Boletos do período</h3>
+          <span class="eyebrow" id="boletos-count">0 boletos</span>
+        </div>
+        <table class="tbl boletos-tbl" id="boletos-tbl">
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Vencimento</th>
+              <th class="num">Valor</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody><!-- preenchido via JS --></tbody>
+        </table>
+        <div class="boletos-foot">
+          <button class="footer-btn" id="boletos-more" style="display:none;">Ver mais</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ─────── PAINEL FATURAMENTO ─────── -->
+    <div class="fin-pane" id="pane-faturamento">
+      <div class="fin-kpis cols-2">
+        <div class="fin-kpi k-rev">
+          <div class="fin-kpi-eyebrow">Total faturado</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="kpi-f-tot">0</span></div>
+          <div class="fin-kpi-foot" id="kpi-f-tot-sub">—</div>
+        </div>
+        <div class="fin-kpi k-ticket">
+          <div class="fin-kpi-eyebrow">Ticket médio</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="kpi-f-tkt">0</span></div>
+          <div class="fin-kpi-foot" id="kpi-f-tkt-sub">— dias com faturamento</div>
+        </div>
+      </div>
+
+      <div class="fin-chart">
+        <div class="fin-chart-header">
+          <div>
+            <div class="fin-chart-title">Faturamento</div>
+            <div class="fin-chart-sub" id="fat-chart-sub">Soma do faturamento por semana · Semana 1 = 1–7 jan</div>
+          </div>
+          <div class="fat-view-toggle">
+            <button class="fat-view-btn active" data-view="semanal">Semanal</button>
+            <button class="fat-view-btn" data-view="diario">Diário</button>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="finFatChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════ SEÇÃO 5 · ESTOQUE (standby) ═══════════ -->
+  <section class="section" id="stock">
+
+    <div class="section-heading">
+      <h2>Estoque</h2>
+      <span class="eyebrow">Em desenvolvimento</span>
+    </div>
+
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+          <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+      </div>
+      <div class="empty-title">Em desenvolvimento</div>
+      <div class="empty-sub">Módulos previstos abaixo.</div>
+    </div>
+
+    <div class="stock-modules">
+      <div class="stock-module">
+        <div class="stock-module-eyebrow">Pipeline NF</div>
+        <div class="stock-module-title">Fluxo automático de NF</div>
+        <div class="stock-module-sub">Integração com <strong>AUTO_ORGANIZAR_NF</strong>.</div>
+      </div>
+      <div class="stock-module">
+        <div class="stock-module-eyebrow">Insights</div>
+        <div class="stock-module-title">Histórico de preços</div>
+        <div class="stock-module-sub">Variação por fornecedor, alimentado pela aba <strong>historicoNF</strong>.</div>
+      </div>
+      <div class="stock-module">
+        <div class="stock-module-eyebrow">Cadastro</div>
+        <div class="stock-module-title">Fornecedores de Estoque</div>
+        <div class="stock-module-sub">Parceiros de NF — pasta <strong>PROCESSADAS/</strong> no Drive.</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-txt">Conteúdo desta aba será liberado em etapas futuras</span>
+      <button class="footer-btn" disabled>Cadastrar Fornecedor (em breve)</button>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- ═══════════ DRAWER + OVERLAY + FAB ═══════════ -->
+<div class="overlay" id="overlay"></div>
+
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-title" id="drawer-title">Ações</div>
+      <div class="drawer-sub" id="drawer-sub">Visão geral</div>
+    </div>
+    <button class="drawer-close" id="drawer-close" aria-label="Fechar">×</button>
+  </div>
+  <div class="drawer-body" id="drawer-body">
+    <!-- conteúdo contextual injetado via JS -->
+  </div>
+</aside>
+
+<button class="fab" id="fab" aria-label="Abrir painel de ações">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+    <polygon points="13 2 4 14 12 14 11 22 20 10 12 10 13 2" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script src="assets/js/painel.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # Painel Empório Barretão
 
-Interface web de gestão interna do Empório Barretão. Página HTML modularizada com CSS e JS separados por responsabilidade, consumindo dados diretamente do Google Sheets via CSV público.
+Interface web de gestão interna do Empório Barretão. Página HTML + 1 CSS + 1 JS, consumindo dados diretamente do Google Sheets via CSV público.
 
 ---
 
@@ -8,52 +8,17 @@ Interface web de gestão interna do Empório Barretão. Página HTML modularizad
 
 ```
 PAINEL/
-├── index_v5.html              ← Ponto de entrada principal
+├── index_v5.html              ← Markup (head, body, modais) — ~700 linhas
+├── CLAUDE.md                  ← Guia de navegação para desenvolvedores e IA
+├── README.md
 └── assets/
     ├── css/
-    │   ├── tokens.css         ← Variáveis de cor e tipografia
-    │   ├── layout.css         ← Shell, header, navegação
-    │   ├── responsive.css     ← Breakpoints e adaptações mobile
-    │   └── components/        ← CSS por componente
-    │       ├── kpi-cards.css
-    │       ├── panels.css
-    │       ├── financeiro.css
-    │       ├── automacoes.css
-    │       ├── visao-geral.css
-    │       ├── relatorios.css
-    │       ├── projetos.css
-    │       ├── drawer.css
-    │       ├── tables.css
-    │       ├── tags.css
-    │       ├── toast.css
-    │       └── estoque.css
+    │   └── painel.css         ← Todo o estilo (~2200 linhas)
     └── js/
-        ├── config.js          ← IDs das planilhas e configurações globais
-        ├── main.js            ← Ponto de entrada JS, inicialização
-        ├── state.js           ← Estado global da aplicação
-        ├── data/
-        │   ├── loader.js      ← Fetch das planilhas Google Sheets
-        │   └── processors.js  ← Processamento e transformação dos dados
-        ├── ui/
-        │   ├── nav.js         ← Navegação entre abas
-        │   ├── drawer.js      ← Painel lateral de ações contextual
-        │   ├── animations.js  ← Animações de entrada e transições
-        │   └── toast.js       ← Notificações temporárias
-        ├── utils/
-        │   ├── dates.js       ← Conversão de datas (serial Excel → JS)
-        │   ├── formatters.js  ← Formatação monetária e numérica
-        │   └── csv.js         ← Parser CSV robusto
-        ├── storage/
-        │   └── projects.js    ← Persistência de projetos via localStorage
-        └── views/
-            ├── visao-geral.js
-            ├── financeiro.js
-            ├── financeiro-geral.js
-            ├── financeiro-charts.js
-            ├── financeiro-contas.js
-            ├── financeiro-faturamento.js
-            └── relatorios.js
+        └── painel.js          ← Toda a lógica (~1140 linhas)
 ```
+
+> Antes de Mai/2026 o projeto tinha `<style>` e `<script>` inline no `index_v5.html` (4059 linhas). Foi extraído para reduzir contexto consumido em sessões de IA e facilitar navegação.
 
 ---
 
@@ -61,11 +26,10 @@ PAINEL/
 
 | Aba | Descrição | Dados |
 |-----|-----------|-------|
-| Visão Geral | Resumo executivo semanal — Mente Ivo | Mockado + futuro Sheets |
+| Visão Geral | Resumo executivo semanal — Mente Ivo | Mockado + faturamento real |
 | Automações | Status e diagnóstico das automações Apps Script | Mockado |
 | Relatórios | Relatórios fixos mensais | Mockado |
-| Financeiro | KPIs, gráfico Receita/Despesa, contas a pagar | Google Sheets (live) |
-| Fornecedores | CRM básico de fornecedores | localStorage |
+| Financeiro | KPIs, gráfico Faturamento vs Contas a Pagar, tabela de boletos | Google Sheets (live) |
 
 ---
 
@@ -75,7 +39,7 @@ PAINEL/
 |----------|-----|-----|
 | BASE_FINANCEIRO | `planilhaBoletos` | Contas a pagar, status pago/pendente |
 | BASE_FINANCEIRO | `faturamentoDiario` | Receita diária por modalidade |
-| BASE_FINANCEIRO | `movimentacoes` | Receita e Despesa consolidadas para gráfico |
+| BASE_FINANCEIRO | `movimentacoes` | Receita e despesa consolidadas (legado) |
 
 **Sheet ID:** `1kpfN3EGarFjkkuMnMBr7ly3mjt3ssOt9AvtepGzWAHA`
 
@@ -108,4 +72,3 @@ PAINEL/
 - [ ] Conectar status das Automações via Apps Script Web App
 - [ ] Implementar relatórios fixos mensais com dados reais
 - [ ] Migrar hospedagem para Google Sites (autenticação corporativa)
-- [ ] Evoluir Fornecedores para CRM completo integrado ao fluxo de NFs
