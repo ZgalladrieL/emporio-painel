@@ -1189,8 +1189,347 @@ window.addEventListener('load', () => {
 
   buildPeriodOptions(); // configura defaults + wire do botão
   carregarDados({ de: ymd(inicio), ate: ymd(hoje) });
+  initEstoque();
 });
 
 window.addEventListener('resize', () => {
-  [chartBalance, chartExpWeek, chartFatWeek].forEach(c => c && c.resize());
+  [chartBalance, chartExpWeek, chartFatWeek, stockDonutChart, stockBarChart].forEach(c => c && c.resize());
 });
+
+/* ═══════════ ESTOQUE (mock — aguardando integração) ═══════════ */
+const STOCK_GRUPOS = [
+  'AGUAS','ALIMENTOS','BEBIDAS MISTAS','CACHAÇAS','CARVÃO',
+  'CERVEJAS','CERVEJAS ESPECIAIS','CHÁ','ENERGÉTICOS',
+  'REFRIGERANTES','SUCOS','VINHOS','WHISKY'
+];
+
+const STOCK_MIX = [
+  { nome: 'Cervejas',         pct: 42, valor: 13600 },
+  { nome: 'Vinhos',           pct: 22, valor:  7100 },
+  { nome: 'Cachaças',         pct: 14, valor:  4540 },
+  { nome: 'Energéticos',      pct:  9, valor:  2900 },
+  { nome: 'Águas',            pct:  6, valor:  1950 },
+  { nome: 'Bebidas mistas',   pct:  5, valor:  1600 },
+  { nome: 'Outros',           pct:  2, valor:   640 }
+];
+const STOCK_COLORS = ['#d4924e','#b04878','#78b85e','#5898c8','#c49840','#a86840','#686868'];
+
+const STOCK_MOV = [
+  { produto:'HEINEKEN 600ML',       grupo:'CERVEJAS',           ent:240, sai:195, custo:7.20  },
+  { produto:'BUDWEISER 350ML',      grupo:'CERVEJAS',           ent:360, sai:300, custo:3.90  },
+  { produto:'STELLA ARTOIS 550ML',  grupo:'CERVEJAS ESPECIAIS', ent:120, sai:88,  custo:7.80  },
+  { produto:'ESTEBAN MARTIN GARN.', grupo:'VINHOS',             ent: 48, sai:32,  custo:28.40 },
+  { produto:'RENO CABERNET SAUV.',  grupo:'VINHOS',             ent: 60, sai:45,  custo:32.10 },
+  { produto:'ALECRIM PORTUGAL',     grupo:'VINHOS',             ent: 36, sai:22,  custo:41.20 },
+  { produto:'MONSTER ENERGY 473ML', grupo:'ENERGÉTICOS',        ent:144, sai:120, custo:8.50  },
+  { produto:'REDBULL 250ML',        grupo:'ENERGÉTICOS',        ent: 96, sai:80,  custo:9.90  },
+  { produto:'ÁGUA CRYSTAL 500ML',   grupo:'AGUAS',              ent:480, sai:420, custo:0.85  },
+  { produto:'CACHAÇA 51 970ML',     grupo:'CACHAÇAS',           ent: 72, sai:60,  custo:11.40 },
+  { produto:'NEGRONI LAGER 473ML',  grupo:'CERVEJAS ESPECIAIS', ent: 84, sai:60,  custo:6.70  },
+  { produto:'JOHNNIE WALKER BLACK', grupo:'WHISKY',             ent: 12, sai: 8,  custo:149.90 }
+];
+
+const STOCK_HIST = [
+  { produto:'HEINEKEN 600ML', refs:[
+    { data:'Mai/2026', forn:'BIG WORKS',     custo:7.20 },
+    { data:'Abr/2026', forn:'BIG WORKS',     custo:6.90 },
+    { data:'Mar/2026', forn:'CIFAL',         custo:6.75 }
+  ]},
+  { produto:'ESTEBAN MARTIN GARN.', refs:[
+    { data:'Mai/2026', forn:'EMPÓRIO MILÃO', custo:28.40 },
+    { data:'Abr/2026', forn:'EMPÓRIO MILÃO', custo:27.80 },
+    { data:'Fev/2026', forn:'EMPÓRIO MILÃO', custo:26.50 }
+  ]},
+  { produto:'RENO CABERNET SAUV.', refs:[
+    { data:'Mai/2026', forn:'VINE ADEGA',    custo:32.10 },
+    { data:'Abr/2026', forn:'VINE ADEGA',    custo:31.40 },
+    { data:'Mar/2026', forn:'VINE ADEGA',    custo:30.90 }
+  ]},
+  { produto:'MONSTER ENERGY 473ML', refs:[
+    { data:'Mai/2026', forn:'CIFAL',         custo:8.50 },
+    { data:'Abr/2026', forn:'CIFAL',         custo:8.50 },
+    { data:'Mar/2026', forn:'CIFAL',         custo:8.20 }
+  ]},
+  { produto:'STELLA ARTOIS 550ML', refs:[
+    { data:'Mai/2026', forn:'BIG WORKS',     custo:7.80 },
+    { data:'Abr/2026', forn:'BIG WORKS',     custo:7.50 },
+    { data:'Fev/2026', forn:'VINE ADEGA',    custo:7.40 }
+  ]},
+  { produto:'JOHNNIE WALKER BLACK', refs:[
+    { data:'Mai/2026', forn:'CIFAL',         custo:149.90 },
+    { data:'Mar/2026', forn:'CIFAL',         custo:145.00 },
+    { data:'Jan/2026', forn:'CIFAL',         custo:138.50 }
+  ]}
+];
+
+const STOCK_PAGE = 6;
+let stockSelected = new Set();
+let stockMovShown = STOCK_PAGE;
+let stockHistShown = STOCK_PAGE;
+let stockDonutChart = null;
+let stockBarChart = null;
+
+function initEstoque() {
+  if (!document.getElementById('stock')) return;
+
+  // sub-abas
+  document.querySelectorAll('#stock .fin-subtab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#stock .fin-subtab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#stock .fin-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const id = btn.dataset.stockPane;
+      const pane = document.getElementById(id);
+      if (pane) pane.classList.add('active');
+      // resize charts ao abrir Geral
+      if (id === 'stock-pane-geral') {
+        setTimeout(() => { stockDonutChart && stockDonutChart.resize(); stockBarChart && stockBarChart.resize(); }, 30);
+      }
+    });
+  });
+
+  initStockGrupos();
+  document.getElementById('stock-apply')?.addEventListener('click', () => {
+    showToast('Filtro aplicado · ' + stockStatusText(), 'success');
+    updateStockStatus();
+  });
+  document.getElementById('stock-mes')?.addEventListener('change', updateStockStatus);
+
+  renderStockDonut();
+  renderStockBar();
+  renderStockMov();
+  renderStockHist();
+  bindStockTableButtons();
+  updateStockStatus();
+}
+
+function stockStatusText() {
+  const mes = document.getElementById('stock-mes')?.value || 'Maio 2026';
+  const grupos = stockSelected.size === 0 ? 'todos os grupos'
+               : (stockSelected.size + ' grupo' + (stockSelected.size > 1 ? 's' : '') + ' selecionado' + (stockSelected.size > 1 ? 's' : ''));
+  return mes + ' · ' + grupos;
+}
+function updateStockStatus() {
+  const el = document.getElementById('stock-status');
+  if (el) el.textContent = stockStatusText();
+}
+
+function initStockGrupos() {
+  const trigger  = document.getElementById('stock-grupos-trigger');
+  const list     = document.getElementById('stock-grupos-list');
+  const search   = document.getElementById('stock-grupos-search');
+  const optsEl   = document.getElementById('stock-grupos-options');
+  const labelEl  = document.getElementById('stock-grupos-label');
+  if (!trigger || !list || !optsEl) return;
+
+  function renderOpts(filter = '') {
+    const f = filter.toLowerCase();
+    optsEl.innerHTML = STOCK_GRUPOS.filter(g => g.toLowerCase().includes(f)).map(g => {
+      const sel = stockSelected.has(g) ? ' selected' : '';
+      return `<div class="stock-grupo-opt${sel}" data-g="${escapeHtml(g)}">
+        <span>${escapeHtml(g)}</span><span class="stock-grupo-check">✓</span>
+      </div>`;
+    }).join('');
+  }
+  function renderLabel() {
+    if (stockSelected.size === 0) {
+      labelEl.textContent = 'Todos os grupos';
+      labelEl.classList.add('placeholder');
+    } else {
+      labelEl.textContent = stockSelected.size + ' grupo' + (stockSelected.size > 1 ? 's' : '') + ' selecionado' + (stockSelected.size > 1 ? 's' : '');
+      labelEl.classList.remove('placeholder');
+    }
+  }
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    list.classList.toggle('open');
+  });
+  search.addEventListener('input', () => renderOpts(search.value));
+  search.addEventListener('click', e => e.stopPropagation());
+  optsEl.addEventListener('click', e => {
+    const opt = e.target.closest('.stock-grupo-opt');
+    if (!opt) return;
+    const g = opt.dataset.g;
+    if (stockSelected.has(g)) stockSelected.delete(g); else stockSelected.add(g);
+    renderOpts(search.value);
+    renderLabel();
+  });
+  document.addEventListener('click', e => {
+    if (!document.getElementById('stock-grupos').contains(e.target)) list.classList.remove('open');
+  });
+  renderOpts();
+  renderLabel();
+}
+
+function renderStockDonut() {
+  const el = document.getElementById('stockDonutChart');
+  if (!el || !window.Chart) return;
+  destroyChart(stockDonutChart);
+  document.getElementById('stock-donut-total').textContent = STOCK_MIX.length;
+  stockDonutChart = new Chart(el.getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: STOCK_MIX.map(g => g.nome),
+      datasets: [{
+        data: STOCK_MIX.map(g => g.pct),
+        backgroundColor: STOCK_COLORS,
+        borderColor: 'rgba(0,0,0,0)',
+        borderWidth: 2,
+        hoverOffset: 4
+      }]
+    },
+    options: {
+      cutout: '70%',
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` } }
+      },
+      animation: { duration: 700 }
+    }
+  });
+  // legend
+  const legend = document.getElementById('stock-donut-legend');
+  if (legend) {
+    legend.innerHTML = STOCK_MIX.map((g, i) => `
+      <div class="stock-legend-item">
+        <div class="stock-legend-left">
+          <span class="stock-legend-dot" style="background:${STOCK_COLORS[i]}"></span>
+          <span class="stock-legend-name">${g.nome}</span>
+        </div>
+        <span class="stock-legend-pct">${g.pct}%</span>
+      </div>`).join('');
+  }
+}
+
+function renderStockBar() {
+  const el = document.getElementById('stockBarChart');
+  if (!el || !window.Chart) return;
+  destroyChart(stockBarChart);
+  stockBarChart = new Chart(el.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: STOCK_MIX.map(g => g.nome),
+      datasets: [{
+        data: STOCK_MIX.map(g => g.valor),
+        backgroundColor: STOCK_COLORS.map(c => c + 'cc'),
+        borderColor: STOCK_COLORS,
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + formatBRL(ctx.parsed.x) } }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#7a7268', font: { size: 10 }, callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' }
+        },
+        y: { grid: { display: false }, ticks: { color: '#a89e8e', font: { size: 11 } } }
+      },
+      animation: { duration: 700 }
+    }
+  });
+}
+
+function renderStockMov() {
+  const tbody = document.querySelector('#stock-mov-tbl tbody');
+  const count = document.getElementById('stock-mov-count');
+  if (!tbody) return;
+  const total = STOCK_MOV.length;
+  const slice = STOCK_MOV.slice(0, stockMovShown);
+  tbody.innerHTML = slice.map(r => {
+    const inv = r.ent * r.custo;
+    return `<tr>
+      <td class="empresa">${escapeHtml(r.produto)}</td>
+      <td class="grupo">${escapeHtml(r.grupo)}</td>
+      <td class="qtd-in">+${r.ent}</td>
+      <td class="qtd-out">−${r.sai}</td>
+      <td class="custo">${formatBRL(r.custo)}</td>
+      <td class="invest">${formatBRL(inv)}</td>
+    </tr>`;
+  }).join('');
+  if (count) count.textContent = total + ' itens · exibindo ' + slice.length;
+  toggleStockButtons('mov', stockMovShown, total);
+}
+
+function renderStockHist() {
+  const tbody = document.querySelector('#stock-hist-tbl tbody');
+  const count = document.getElementById('stock-hist-count');
+  if (!tbody) return;
+  const total = STOCK_HIST.length;
+  const slice = STOCK_HIST.slice(0, stockHistShown);
+  tbody.innerHTML = slice.map(h => h.refs.map((r, i) => {
+    const isAtual = i === 0;
+    let varHtml = '<span class="var-cell flat">—</span>';
+    if (i < h.refs.length - 1) {
+      const prev = h.refs[i + 1].custo;
+      const diff = ((r.custo - prev) / prev) * 100;
+      const cls = diff > 0.01 ? 'up' : diff < -0.01 ? 'down' : 'flat';
+      const sign = diff > 0 ? '+' : '';
+      varHtml = `<span class="var-cell ${cls}">${sign}${diff.toFixed(1)}%</span>`;
+    }
+    const groupCls = isAtual ? ' class="group-start"' : '';
+    const refBadge = isAtual
+      ? '<span class="ref-badge atual">Atual</span>'
+      : `<span class="ref-badge ant">− ${i} ref.</span>`;
+    return `<tr${groupCls}>
+      <td class="empresa">${isAtual ? escapeHtml(h.produto) : ''}</td>
+      <td>${refBadge}</td>
+      <td class="venc">${escapeHtml(r.data)}</td>
+      <td class="grupo">${escapeHtml(r.forn)}</td>
+      <td class="custo">${formatBRL(r.custo)}</td>
+      <td class="var-cell">${varHtml}</td>
+    </tr>`;
+  }).join('')).join('');
+  if (count) count.textContent = total + ' produtos · exibindo ' + slice.length;
+  toggleStockButtons('hist', stockHistShown, total);
+}
+
+function toggleStockButtons(prefix, shown, total) {
+  const more = document.getElementById('stock-' + prefix + '-more');
+  const all  = document.getElementById('stock-' + prefix + '-all');
+  if (!more || !all) return;
+  if (total <= STOCK_PAGE) {
+    more.style.display = 'none';
+    all.style.display = 'none';
+    return;
+  }
+  if (shown >= total) {
+    more.textContent = 'Ver menos';
+    more.style.display = '';
+    all.style.display = 'none';
+  } else {
+    more.textContent = 'Ver mais';
+    more.style.display = '';
+    all.style.display = '';
+  }
+}
+
+function bindStockTableButtons() {
+  document.getElementById('stock-mov-more')?.addEventListener('click', () => {
+    const total = STOCK_MOV.length;
+    if (stockMovShown >= total) stockMovShown = STOCK_PAGE;
+    else stockMovShown = Math.min(stockMovShown + STOCK_PAGE, total);
+    renderStockMov();
+  });
+  document.getElementById('stock-mov-all')?.addEventListener('click', () => {
+    stockMovShown = STOCK_MOV.length;
+    renderStockMov();
+  });
+  document.getElementById('stock-hist-more')?.addEventListener('click', () => {
+    const total = STOCK_HIST.length;
+    if (stockHistShown >= total) stockHistShown = STOCK_PAGE;
+    else stockHistShown = Math.min(stockHistShown + STOCK_PAGE, total);
+    renderStockHist();
+  });
+  document.getElementById('stock-hist-all')?.addEventListener('click', () => {
+    stockHistShown = STOCK_HIST.length;
+    renderStockHist();
+  });
+}

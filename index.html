@@ -144,179 +144,20 @@
   <section class="section" id="automations">
 
     <div class="section-heading">
-      <h2>Automações em execução</h2>
-      <span class="eyebrow">Status · 25 abr · 14:32</span>
+      <h2>Automações</h2>
+      <span class="eyebrow">Em desenvolvimento</span>
     </div>
 
-    <div class="auto-grid">
-
-      <!-- AUTO_ORGANIZAR_BOLETOS -->
-      <div class="auto-card">
-        <div class="auto-card-head">
-          <div>
-            <div class="auto-name">AUTO_ORGANIZAR_BOLETOS</div>
-            <div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-top:6px;">Pipeline financeiro</div>
-          </div>
-          <span class="status-badge ok"><span class="dot"></span>Ativo</span>
-        </div>
-
-        <div class="auto-meta-grid">
-          <div class="meta-block">
-            <span class="meta-label">Última execução</span>
-            <span class="meta-val">25/04 · 14:30</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Resultado</span>
-            <span class="meta-val">2 boletos<span style="font-size:13px;color:var(--text2);font-style:italic;font-family:'DM Sans',sans-serif;font-weight:400"> processados</span></span>
-          </div>
-        </div>
-
-        <div class="dest-list">
-          <div class="dest-eyebrow">Destinos · Abril</div>
-          <div class="dest-row"><span class="dest-name">PHILIP MORRIS</span><span class="dest-count">3</span></div>
-          <div class="dest-row"><span class="dest-name">CIFAL</span><span class="dest-count">1</span></div>
-          <div class="dest-row"><span class="dest-name">LOUVADA</span><span class="dest-count">2</span></div>
-        </div>
-
-        <div class="trigger-pill">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          A cada 15 min
-        </div>
-
-        <!-- DIAGNÓSTICO -->
-        <div class="diag">
-          <div class="diag-head">
-            <span class="diag-eyebrow">Diagnóstico Mente Ivo</span>
-            <span class="tag green">OK</span>
-          </div>
-          <div class="diag-text">
-            Pipeline estável. Próximo passo: implementar reenvio automático em caso de OCR falho.
-          </div>
-        </div>
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/>
+          <path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/>
+          <path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/>
+        </svg>
       </div>
-
-      <!-- AUTO_ORGANIZAR_NF -->
-      <div class="auto-card">
-        <div class="auto-card-head">
-          <div>
-            <div class="auto-name">AUTO_ORGANIZAR_NF</div>
-            <div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-top:6px;">Pipeline fiscal</div>
-          </div>
-          <span class="status-badge ok"><span class="dot"></span>Ativo</span>
-        </div>
-
-        <div class="auto-meta-grid">
-          <div class="meta-block">
-            <span class="meta-label">Última execução</span>
-            <span class="meta-val">25/04 · 14:00</span>
-          </div>
-          <div class="meta-block">
-            <span class="meta-label">Resultado</span>
-            <span class="meta-val">1 NF · 18<span style="font-size:13px;color:var(--text2);font-style:italic;font-family:'DM Sans',sans-serif;font-weight:400"> itens</span></span>
-          </div>
-        </div>
-
-        <div class="dest-list">
-          <div class="dest-eyebrow">Fornecedores · Abril</div>
-          <div class="dest-row"><span class="dest-name">REGRA LOGISTICA</span><span class="dest-count">4 NFs</span></div>
-          <div class="dest-row"><span class="dest-name">RIO VERMELHO</span><span class="dest-count">2 NFs</span></div>
-        </div>
-
-        <div class="trigger-pill">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          A cada hora
-        </div>
-
-        <!-- DIAGNÓSTICO -->
-        <div class="diag">
-          <div class="diag-head">
-            <span class="diag-eyebrow">Diagnóstico Mente Ivo</span>
-            <span class="tag coral">Atenção</span>
-          </div>
-          <div class="diag-text">
-            1 erro nas últimas 24h. XML com estrutura fora do padrão NF-e recebido de RIO VERMELHO.
-          </div>
-          <div class="diag-error">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <div><strong style="color:#e89595;">Último erro · 25/04 12:00</strong> — Falha no parse: elemento <code>&lt;cEAN&gt;</code> ausente em 3 itens.</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ORNAMENT -->
-    <div class="ornament">
-      <div class="ornament-line"></div>
-      <div class="ornament-diamond"></div>
-      <div class="ornament-line"></div>
-    </div>
-
-    <!-- LOG TABLE -->
-    <div class="panel" style="margin-bottom:1.2rem;">
-      <div class="panel-title">Log de execuções recentes</div>
-      <div class="panel-sub">Últimas 8 execuções · ordem cronológica reversa</div>
-      <table class="tbl log-tbl">
-        <thead>
-          <tr><th>Horário</th><th>Automação</th><th>Status</th><th>Resultado</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="time">25/04 · 14:30</td>
-            <td class="code">AUTO_ORGANIZAR_BOLETOS</td>
-            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
-            <td>2 boletos processados</td>
-          </tr>
-          <tr>
-            <td class="time">25/04 · 14:00</td>
-            <td class="code">AUTO_ORGANIZAR_NF</td>
-            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
-            <td>1 NF · 18 itens</td>
-          </tr>
-          <tr>
-            <td class="time">25/04 · 13:30</td>
-            <td class="code">AUTO_ORGANIZAR_BOLETOS</td>
-            <td><span class="status-cell idle"><span class="ic">○</span>Vazio</span></td>
-            <td>Nenhum arquivo encontrado</td>
-          </tr>
-          <tr>
-            <td class="time">25/04 · 13:00</td>
-            <td class="code">AUTO_ORGANIZAR_NF</td>
-            <td><span class="status-cell idle"><span class="ic">○</span>Vazio</span></td>
-            <td>Nenhum arquivo encontrado</td>
-          </tr>
-          <tr>
-            <td class="time">25/04 · 12:30</td>
-            <td class="code">AUTO_ORGANIZAR_BOLETOS</td>
-            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
-            <td>1 boleto processado</td>
-          </tr>
-          <tr>
-            <td class="time">25/04 · 12:00</td>
-            <td class="code">AUTO_ORGANIZAR_NF</td>
-            <td><span class="status-cell err"><span class="ic">✗</span>Erro</span></td>
-            <td>Falha no parse do XML</td>
-          </tr>
-          <tr>
-            <td class="time">25/04 · 11:30</td>
-            <td class="code">AUTO_ORGANIZAR_BOLETOS</td>
-            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
-            <td>3 boletos processados</td>
-          </tr>
-          <tr>
-            <td class="time">25/04 · 11:00</td>
-            <td class="code">AUTO_ORGANIZAR_NF</td>
-            <td><span class="status-cell ok"><span class="ic">✓</span>Sucesso</span></td>
-            <td>2 NFs · 34 itens</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      <span class="footer-txt">Pipelines monitorados continuamente · próxima execução em ~14 min</span>
-      <button class="footer-btn">Ver histórico completo ↗</button>
+      <div class="empty-title">Em desenvolvimento</div>
+      <div class="empty-sub">Conteúdo desta aba será liberado em breve.</div>
     </div>
 
   </section>
@@ -596,47 +437,157 @@
 
   </section>
 
-  <!-- ═══════════ SEÇÃO 5 · ESTOQUE (standby) ═══════════ -->
+  <!-- ═══════════ SEÇÃO 5 · ESTOQUE ═══════════ -->
   <section class="section" id="stock">
 
     <div class="section-heading">
       <h2>Estoque</h2>
-      <span class="eyebrow">Em desenvolvimento</span>
+      <span class="eyebrow" id="stock-status">Maio 2026 · todos os grupos</span>
     </div>
 
-    <div class="empty-state">
-      <div class="empty-icon">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-          <line x1="12" y1="22.08" x2="12" y2="12"/>
-        </svg>
+    <!-- Toolbar: mês de referência + grupos -->
+    <div class="fin-toolbar">
+      <div class="fin-period">
+        <div class="fin-period-group">
+          <label for="stock-mes">Mês de referência</label>
+          <select id="stock-mes" class="stock-select">
+            <option>Janeiro 2026</option>
+            <option>Fevereiro 2026</option>
+            <option>Março 2026</option>
+            <option>Abril 2026</option>
+            <option selected>Maio 2026</option>
+          </select>
+        </div>
+
+        <div class="fin-period-group stock-grupos-group">
+          <label>Grupos de produtos</label>
+          <div class="stock-grupos" id="stock-grupos">
+            <button type="button" class="stock-grupos-trigger" id="stock-grupos-trigger">
+              <span class="stock-grupos-label" id="stock-grupos-label">Todos os grupos</span>
+              <span class="stock-grupos-caret">▾</span>
+            </button>
+            <div class="stock-grupos-list" id="stock-grupos-list">
+              <input class="stock-grupos-search" id="stock-grupos-search" type="text" placeholder="Buscar grupo…" />
+              <div class="stock-grupos-options" id="stock-grupos-options"></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="fin-period-btn" id="stock-apply">Aplicar filtro</button>
       </div>
-      <div class="empty-title">Em desenvolvimento</div>
-      <div class="empty-sub">Módulos previstos abaixo.</div>
     </div>
 
-    <div class="stock-modules">
-      <div class="stock-module">
-        <div class="stock-module-eyebrow">Pipeline NF</div>
-        <div class="stock-module-title">Fluxo automático de NF</div>
-        <div class="stock-module-sub">Integração com <strong>AUTO_ORGANIZAR_NF</strong>.</div>
+    <!-- Sub-abas -->
+    <div class="fin-subtabs" role="tablist">
+      <button class="fin-subtab active" data-stock-pane="stock-pane-geral" role="tab">Geral</button>
+      <button class="fin-subtab" data-stock-pane="stock-pane-mov" role="tab">Mov. por grupo</button>
+      <button class="fin-subtab" data-stock-pane="stock-pane-hist" role="tab">Histórico de custo</button>
+    </div>
+
+    <!-- ─── PAINEL GERAL ─── -->
+    <div class="fin-pane active" id="stock-pane-geral">
+      <div class="fin-kpis cols-3">
+        <div class="fin-kpi k-rev">
+          <div class="fin-kpi-eyebrow">Valor em estoque</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="stock-kpi-valor">148.320,00</span></div>
+          <div class="fin-kpi-foot">total estimado</div>
+        </div>
+        <div class="fin-kpi k-paid">
+          <div class="fin-kpi-eyebrow">Entradas no mês</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="stock-kpi-ent">32.410,50</span></div>
+          <div class="fin-kpi-foot">valor comprado</div>
+        </div>
+        <div class="fin-kpi k-pay">
+          <div class="fin-kpi-eyebrow">Saídas no mês</div>
+          <div class="fin-kpi-val"><span class="pfx">R$</span><span id="stock-kpi-sai">28.760,00</span></div>
+          <div class="fin-kpi-foot">valor vendido (custo)</div>
+        </div>
       </div>
-      <div class="stock-module">
-        <div class="stock-module-eyebrow">Insights</div>
-        <div class="stock-module-title">Histórico de preços</div>
-        <div class="stock-module-sub">Variação por fornecedor, alimentado pela aba <strong>historicoNF</strong>.</div>
-      </div>
-      <div class="stock-module">
-        <div class="stock-module-eyebrow">Cadastro</div>
-        <div class="stock-module-title">Fornecedores de Estoque</div>
-        <div class="stock-module-sub">Parceiros de NF — pasta <strong>PROCESSADAS/</strong> no Drive.</div>
+
+      <div class="stock-chart-grid">
+        <div class="fin-chart stock-donut-card">
+          <div class="fin-chart-title">Mix de estoque</div>
+          <div class="fin-chart-sub">Participação por grupo · Maio</div>
+          <div class="stock-donut-wrap">
+            <div class="stock-donut-canvas">
+              <canvas id="stockDonutChart"></canvas>
+              <div class="stock-donut-center">
+                <div class="stock-donut-total" id="stock-donut-total">0</div>
+                <div class="stock-donut-label">grupos</div>
+              </div>
+            </div>
+            <div class="stock-donut-legend" id="stock-donut-legend"></div>
+          </div>
+        </div>
+
+        <div class="fin-chart">
+          <div class="fin-chart-title">Valor investido por grupo</div>
+          <div class="fin-chart-sub">Entradas acumuladas no mês · R$</div>
+          <div class="chart-wrap stock-bar-wrap">
+            <canvas id="stockBarChart"></canvas>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="footer">
-      <span class="footer-txt">Conteúdo desta aba será liberado em etapas futuras</span>
-      <button class="footer-btn" disabled>Cadastrar Fornecedor (em breve)</button>
+    <!-- ─── MOV. POR GRUPO ─── -->
+    <div class="fin-pane" id="stock-pane-mov">
+      <div class="fin-table-wrap">
+        <div class="fin-table-head">
+          <div>
+            <h3>Movimentação por produto</h3>
+            <div class="stock-table-sub">Entradas, saídas e custo · Maio 2026</div>
+          </div>
+          <span class="eyebrow" id="stock-mov-count">0 itens</span>
+        </div>
+        <table class="tbl boletos-tbl stock-tbl" id="stock-mov-tbl">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Grupo</th>
+              <th class="num">Qtd entrada</th>
+              <th class="num">Qtd saída</th>
+              <th class="num">Último custo</th>
+              <th class="num">Valor investido</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="boletos-foot stock-table-foot">
+          <button class="footer-btn" id="stock-mov-more">Ver mais</button>
+          <button class="footer-btn ghost" id="stock-mov-all">Mostrar todos</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── HISTÓRICO DE CUSTO ─── -->
+    <div class="fin-pane" id="stock-pane-hist">
+      <div class="fin-table-wrap">
+        <div class="fin-table-head">
+          <div>
+            <h3>Histórico de custo por produto</h3>
+            <div class="stock-table-sub">Últimas 3 referências de compra por produto</div>
+          </div>
+          <span class="eyebrow" id="stock-hist-count">0 produtos</span>
+        </div>
+        <table class="tbl boletos-tbl stock-tbl stock-hist-tbl" id="stock-hist-tbl">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Referência</th>
+              <th>Data</th>
+              <th>Fornecedor</th>
+              <th class="num">Custo unit.</th>
+              <th class="num">Variação</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="boletos-foot stock-table-foot">
+          <button class="footer-btn" id="stock-hist-more">Ver mais</button>
+          <button class="footer-btn ghost" id="stock-hist-all">Mostrar todos</button>
+        </div>
+      </div>
     </div>
 
   </section>
